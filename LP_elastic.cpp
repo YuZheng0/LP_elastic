@@ -95,15 +95,14 @@ void findEllipse(node nodes[DIM][DIM])
 	{
 		for (int j = 0; j < DIM; j++)
 		{
-			double a2,b2,x2,y2;
+			double a2, b2, x2, y2;
 			a2 = 0.01 * 0.01;
 			b2 = 0.2 * 0.2;
 			x2 = nodes[i][j].position[0] * nodes[i][j].position[0];
 			y2 = nodes[i][j].position[1] * nodes[i][j].position[1];
 
-			if (x2/a2 + y2/b2 <=1)
+			if (x2 / a2 + y2 / b2 <= 1)
 				nodes[i][j].inside = 2;
-			
 		}
 	}
 }
@@ -514,8 +513,9 @@ void findForce(node nodes[DIM][DIM])
 					double fxk, fyk;
 
 					int di = indices[k][0], dj = indices[k][1];
-					
-					if(nodes[i+di][j+dj].inside!=2){   // Apply tension only when not inside cutout region
+
+					if (nodes[i + di][j + dj].inside != 2)
+					{ // Apply tension only when not inside cutout region
 						deltaX = nodes[i + di][j + dj].position[0] - nodes[i][j].position[0];
 						deltaY = nodes[i + di][j + dj].position[1] - nodes[i][j].position[1];
 						distance = sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -523,7 +523,8 @@ void findForce(node nodes[DIM][DIM])
 						fxk = (deltaX / distance) * (distance - SPACE) * KS;
 						fyk = (deltaY / distance) * (distance - SPACE) * KS;
 						nodes[i][j].force[0] += fxk;
-						nodes[i][j].force[1] += fyk;}
+						nodes[i][j].force[1] += fyk;
+					}
 				}
 			}
 
@@ -538,7 +539,8 @@ void findForce(node nodes[DIM][DIM])
 					double fxk, fyk;
 
 					int di = indices2[k][0], dj = indices2[k][1];
-					if(nodes[i+di][j+dj].inside!=2){   // Apply tension only when not inside cutout region
+					if (nodes[i + di][j + dj].inside != 2)
+					{ // Apply tension only when not inside cutout region
 						deltaX = nodes[i + di][j + dj].position[0] - nodes[i][j].position[0];
 						deltaY = nodes[i + di][j + dj].position[1] - nodes[i][j].position[1];
 						distance = sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -546,7 +548,8 @@ void findForce(node nodes[DIM][DIM])
 						fxk = (deltaX / distance) * (distance - DIAGONAL) * KS;
 						fyk = (deltaY / distance) * (distance - DIAGONAL) * KS;
 						nodes[i][j].force[0] += fxk;
-						nodes[i][j].force[1] += fyk;}
+						nodes[i][j].force[1] += fyk;
+					}
 				}
 			}
 		}
@@ -611,7 +614,7 @@ int main()
 	}
 */
 	//addcellTri(nodes);
-	
+
 	findCircle(nodes);
 	findEllipse(nodes);
 	std::ofstream fout1("ori.txt");
@@ -624,7 +627,7 @@ int main()
 		}
 	}
 	fout1.close();
-	
+
 	growCircle(nodes);
 	for (int nsteps = 0; nsteps < STEPS; nsteps++)
 	{
@@ -642,7 +645,7 @@ int main()
 		}
 	}
 	fout.close();
-	
+
 	endTime = omp_get_wtime();
 	std::cout << "Total time: " << endTime - startTime << " s" << std::endl;
 
